@@ -8,7 +8,7 @@
   },
   "scripts": {
     "lint": "eslint \"{src,test}/**/*.js\" --fix",
-    "test": "npm run lint && nyc mocha tests",
+    "test": "npm run lint && nyc --reporter=lcov  mocha tests",
     "coverage": "nyc --reporter=lcov npm run test",
     "start": "node index.js",
     "prepare": "husky install"
