@@ -9,6 +9,7 @@
   "scripts": {
     "lint": "eslint \"{src,test}/**/*.js\" --fix",
     "test": "npm run lint && nyc --reporter=lcov  mocha tests",
+    "test:load": "artillery run artillery.yaml",
     "coverage": "nyc --reporter=lcov npm run test",
     "start": "node index.js",
     "prepare": "husky install"
@@ -30,6 +31,7 @@
     "winston": "^3.3.3"
   },
   "devDependencies": {
+    "artillery": "^1.7.8",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",

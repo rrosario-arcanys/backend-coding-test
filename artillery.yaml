@@ -1,0 +1,36 @@
+config:
+  target: 'http://localhost:8010'
+  phases:
+    - duration: 60
+      arrivalRate: 5
+      name: Warm up
+    - duration: 120
+      arrivalRate: 5
+      rampTo: 50
+      name: Ramp up load
+
+scenarios:
+  - name: "Get health"
+    flow:
+      - get:
+        url: "/health"
+  - name: "Create ride"
+    flow:
+      - post:
+          url: "/rides"
+          json: 
+              start_lat: "0"
+              start_long: "0"
+              end_lat: "50"
+              end_long: "50"
+              rider_name: "Rider Name"
+              driver_name: "Driver Name"
+              driver_vehicle: "Driver Vehicle"     
+  - name: "Get first 10 rides"
+    flow:
+      - get:
+          url: "/rides?page=1&limit=10"
+  - name: "Get ride detail of first ride"
+    flow:
+      - get:
+          url: "/rides/1"
