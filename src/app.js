@@ -196,6 +196,19 @@ module.exports = (db) => {
    * /rides:
    *  get:
    *      summary: Get all rides
+   *      parameters:
+   *        - in: query
+   *          name: limit
+   *          schema:
+   *              type: integer
+   *          required: false
+   *          description: Numeric value of the number of rides per page. Default is 25
+   *        - in: query
+   *          name: page
+   *          schema:
+   *              type: integer
+   *          required: false
+   *          description: Numeric value of the requested page number. Default is 1
    *      responses:
    *          '200':
    *              description: A successful response
@@ -205,23 +218,30 @@ module.exports = (db) => {
    *              description: No rides found
    */
   app.get('/rides', (req, res) => {
-    db.all('SELECT * FROM Rides', function (err, rows) {
-      if (err) {
-        return res.send({
-          error_code: 'SERVER_ERROR',
-          message: 'Unknown error',
-        });
-      }
+    const page = req.query.page ? req.query.page : 1;
+    const limit = req.query.limit ? req.query.limit : 25;
+    const skip = limit * (page - 1);
 
-      if (rows.length === 0) {
-        return res.send({
-          error_code: 'RIDES_NOT_FOUND_ERROR',
-          message: 'Could not find any rides',
-        });
-      }
+    db.all(
+      `SELECT * FROM Rides LIMIT '${limit}' OFFSET '${skip}';`,
+      function (err, rows) {
+        if (err) {
+          return res.send({
+            error_code: 'SERVER_ERROR',
+            message: 'Unknown error',
+          });
+        }
 
-      res.send(rows);
-    });
+        if (rows.length === 0) {
+          return res.send({
+            error_code: 'RIDES_NOT_FOUND_ERROR',
+            message: 'Could not find any rides',
+          });
+        }
+
+        res.send(rows);
+      },
+    );
   });
 
   /**
