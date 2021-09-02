@@ -13,6 +13,9 @@ const db = new sqlite3.Database(':memory:');
 const helmet = require('helmet');
 app.use(helmet());
 
+const sqlinjection = require('sql-injection');
+app.use(sqlinjection);
+
 const buildSchemas = require('./src/schemas');
 
 db.serialize(() => {
