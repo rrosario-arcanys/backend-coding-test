@@ -9,6 +9,7 @@ const db = new sqlite3.Database(':memory:');
 
 const app = require('../src/app')(db);
 const buildSchemas = require('../src/schemas');
+const { MESSAGES } = require('../src/utils/constants');
 
 describe('API tests', () => {
   let rides;
@@ -55,18 +56,12 @@ describe('API tests', () => {
       rides.start_lat = 100;
       rides.start_long = 200;
 
-      const expected_response = {
-        error_code: 'VALIDATION_ERROR',
-        message:
-          'Start latitude and longitude must be between -90 - 90 and -180 to 180 degrees respectively',
-      };
-
       request(app)
         .post('/rides')
         .send(rides)
         .expect(200)
         .end(function (err, res) {
-          assert.deepEqual(res.body, expected_response);
+          assert.deepEqual(res.body, MESSAGES.startLatLongError);
           return done();
         });
     });
@@ -75,18 +70,12 @@ describe('API tests', () => {
       rides.end_lat = 100;
       rides.end_long = 200;
 
-      const expected_response = {
-        error_code: 'VALIDATION_ERROR',
-        message:
-          'End latitude and longitude must be between -90 - 90 and -180 to 180 degrees respectively',
-      };
-
       request(app)
         .post('/rides')
         .send(rides)
         .expect(200)
         .end(function (err, res) {
-          assert.deepEqual(res.body, expected_response);
+          assert.deepEqual(res.body, MESSAGES.endLatLongError);
           return done();
         });
     });
@@ -94,17 +83,12 @@ describe('API tests', () => {
     it('should return validation error when driver name is empty string', (done) => {
       rides.driver_name = '';
 
-      const expected_response = {
-        error_code: 'VALIDATION_ERROR',
-        message: 'Rider name must be a non empty string',
-      };
-
       request(app)
         .post('/rides')
         .send(rides)
         .expect(200)
         .end(function (err, res) {
-          assert.deepEqual(res.body, expected_response);
+          assert.deepEqual(res.body, MESSAGES.riderNameError);
           return done();
         });
     });
@@ -112,17 +96,12 @@ describe('API tests', () => {
     it('should return validation error when driver name is not a string', (done) => {
       rides.driver_name = 123;
 
-      const expected_response = {
-        error_code: 'VALIDATION_ERROR',
-        message: 'Rider name must be a non empty string',
-      };
-
       request(app)
         .post('/rides')
         .send(rides)
         .expect(200)
         .end(function (err, res) {
-          assert.deepEqual(res.body, expected_response);
+          assert.deepEqual(res.body, MESSAGES.riderNameError);
           return done();
         });
     });
@@ -130,17 +109,12 @@ describe('API tests', () => {
     it('should return validation error when rider name is empty string', (done) => {
       rides.rider_name = '';
 
-      const expected_response = {
-        error_code: 'VALIDATION_ERROR',
-        message: 'Rider name must be a non empty string',
-      };
-
       request(app)
         .post('/rides')
         .send(rides)
         .expect(200)
         .end(function (err, res) {
-          assert.deepEqual(res.body, expected_response);
+          assert.deepEqual(res.body, MESSAGES.riderNameError);
           return done();
         });
     });
@@ -148,17 +122,12 @@ describe('API tests', () => {
     it('should return validation error when rider name is not a string', (done) => {
       rides.rider_name = 123;
 
-      const expected_response = {
-        error_code: 'VALIDATION_ERROR',
-        message: 'Rider name must be a non empty string',
-      };
-
       request(app)
         .post('/rides')
         .send(rides)
         .expect(200)
         .end(function (err, res) {
-          assert.deepEqual(res.body, expected_response);
+          assert.deepEqual(res.body, MESSAGES.riderNameError);
           return done();
         });
     });
@@ -166,17 +135,12 @@ describe('API tests', () => {
     it('should return validation error when driver vehicle is empty string', (done) => {
       rides.driver_vehicle = '';
 
-      const expected_response = {
-        error_code: 'VALIDATION_ERROR',
-        message: 'Rider name must be a non empty string',
-      };
-
       request(app)
         .post('/rides')
         .send(rides)
         .expect(200)
         .end(function (err, res) {
-          assert.deepEqual(res.body, expected_response);
+          assert.deepEqual(res.body, MESSAGES.riderNameError);
           return done();
         });
     });
@@ -184,17 +148,12 @@ describe('API tests', () => {
     it('should return validation error when driver vehicle is not a string', (done) => {
       rides.driver_vehicle = 123;
 
-      const expected_response = {
-        error_code: 'VALIDATION_ERROR',
-        message: 'Rider name must be a non empty string',
-      };
-
       request(app)
         .post('/rides')
         .send(rides)
         .expect(200)
         .end(function (err, res) {
-          assert.deepEqual(res.body, expected_response);
+          assert.deepEqual(res.body, MESSAGES.riderNameError);
           return done();
         });
     });
