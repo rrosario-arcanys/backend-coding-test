@@ -1,3 +1,8 @@
+const ok_response = require('./response/ok');
+const badrequest_response = require('./response/badRequest');
+const servererror_response = require('./response/serverError');
+const notfound_response = require('./response/notFound');
+
 module.exports = {
   openapi: '3.0.0',
   info: {
@@ -21,9 +26,7 @@ module.exports = {
       get: {
         summary: 'Get health',
         responses: {
-          200: {
-            description: 'OK',
-          },
+          ...ok_response,
         },
       },
     },
@@ -31,7 +34,6 @@ module.exports = {
     '/rides/': {
       post: {
         summary: 'Add a new ride',
-
         requestBody: {
           content: {
             'application/json': {
@@ -69,78 +71,9 @@ module.exports = {
         },
 
         responses: {
-          200: {
-            description: 'OK',
-          },
-          400: {
-            description: 'Bad Request',
-            content: {
-              'application/json': {
-                schema: {
-                  description: '',
-                  type: 'object',
-                  properties: {
-                    error_code: {
-                      type: 'string',
-                    },
-                    message: {
-                      type: 'string',
-                    },
-                  },
-                  required: ['error_code', 'message'],
-                },
-                examples: {
-                  'invalid start lat and long': {
-                    value: {
-                      error_code: 'VALIDATION_ERROR',
-                      message:
-                        'Start latitude and longitude must be between -90 - 90 and -180 to 180 degrees respectively',
-                    },
-                  },
-                  'invalid end lat and long': {
-                    value: {
-                      error_code: 'VALIDATION_ERROR',
-                      message:
-                        'End latitude and longitude must be between -90 - 90 and -180 to 180 degrees respectively',
-                    },
-                  },
-
-                  'invalid name': {
-                    error_code: 'VALIDATION_ERROR',
-                    message: 'Rider name must be a non empty string',
-                  },
-                },
-              },
-            },
-          },
-          500: {
-            description: 'Server Error',
-            content: {
-              'application/json': {
-                schema: {
-                  description: '',
-                  type: 'object',
-                  properties: {
-                    error_code: {
-                      type: 'string',
-                    },
-                    message: {
-                      type: 'string',
-                    },
-                  },
-                  required: ['error_code', 'message'],
-                },
-                examples: {
-                  'Unknown Error': {
-                    value: {
-                      error_code: 'SERVER_ERROR',
-                      message: 'Unknown error',
-                    },
-                  },
-                },
-              },
-            },
-          },
+          ...ok_response,
+          ...badrequest_response,
+          ...servererror_response,
         },
       },
     },
@@ -162,15 +95,9 @@ module.exports = {
         ],
 
         responses: {
-          200: {
-            description: 'OK',
-          },
-          400: {
-            description: 'BAD REQUEST',
-          },
-          500: {
-            description: 'SERVER_ERROR',
-          },
+          ...ok_response,
+          ...notfound_response,
+          ...servererror_response,
         },
       },
     },
@@ -203,15 +130,9 @@ module.exports = {
         ],
 
         responses: {
-          200: {
-            description: 'OK',
-          },
-          400: {
-            description: 'BAD REQUEST',
-          },
-          500: {
-            description: 'SERVER_ERROR',
-          },
+          ...ok_response,
+          ...notfound_response,
+          ...servererror_response,
         },
       },
     },

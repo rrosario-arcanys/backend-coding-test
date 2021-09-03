@@ -52,7 +52,7 @@ const getRide = async (req, res, db) => {
     if (data.length === 0) {
       logger.error(MESSAGES.noRideFound);
       return res
-        .status(STATUS_CODE.BAD_REQUEST)
+        .status(STATUS_CODE.NOT_FOUND)
         .send(MESSAGES.noRideFound);
     }
 
@@ -75,7 +75,7 @@ const getRides = async (req, res, db) => {
     if (data.length === 0) {
       logger.error(MESSAGES.noRideFound);
       return res
-        .status(STATUS_CODE.BAD_REQUEST)
+        .status(STATUS_CODE.NOT_FOUND)
         .send(MESSAGES.noRideFound);
     }
 
