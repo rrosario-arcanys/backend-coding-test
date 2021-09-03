@@ -13,7 +13,9 @@ const createRide = async (req, res, db) => {
 
     if (validationError) {
       logger.error(validationError);
-      return res.send(validationError);
+      return res
+        .status(STATUS_CODE.BAD_REQUEST)
+        .send(validationError);
     }
 
     const values = [
@@ -50,7 +52,7 @@ const getRide = async (req, res, db) => {
     if (data.length === 0) {
       logger.error(MESSAGES.noRideFound);
       return res
-        .status(STATUS_CODE.BAD_REQUEST)
+        .status(STATUS_CODE.NOT_FOUND)
         .send(MESSAGES.noRideFound);
     }
 
@@ -69,15 +71,22 @@ const getRides = async (req, res, db) => {
     const limit = req.query.limit ? req.query.limit : 25;
 
     const data = await getAllRides(page, limit, db);
+    const totalCount = data.length;
 
-    if (data.length === 0) {
+    if (totalCount === 0) {
       logger.error(MESSAGES.noRideFound);
       return res
-        .status(STATUS_CODE.BAD_REQUEST)
+        .status(STATUS_CODE.NOT_FOUND)
         .send(MESSAGES.noRideFound);
     }
+    const response = {
+      page,
+      limit,
+      totalCount,
+      data,
+    };
 
-    return res.send(data);
+    return res.send(response);
   } catch (err) {
     logger.error(MESSAGES.serverError);
     return res
