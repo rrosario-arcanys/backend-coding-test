@@ -73,10 +73,73 @@ module.exports = {
             description: 'OK',
           },
           400: {
-            description: 'BAD REQUEST',
+            description: 'Bad Request',
+            content: {
+              'application/json': {
+                schema: {
+                  description: '',
+                  type: 'object',
+                  properties: {
+                    error_code: {
+                      type: 'string',
+                    },
+                    message: {
+                      type: 'string',
+                    },
+                  },
+                  required: ['error_code', 'message'],
+                },
+                examples: {
+                  'invalid start lat and long': {
+                    value: {
+                      error_code: 'VALIDATION_ERROR',
+                      message:
+                        'Start latitude and longitude must be between -90 - 90 and -180 to 180 degrees respectively',
+                    },
+                  },
+                  'invalid end lat and long': {
+                    value: {
+                      error_code: 'VALIDATION_ERROR',
+                      message:
+                        'End latitude and longitude must be between -90 - 90 and -180 to 180 degrees respectively',
+                    },
+                  },
+
+                  'invalid name': {
+                    error_code: 'VALIDATION_ERROR',
+                    message: 'Rider name must be a non empty string',
+                  },
+                },
+              },
+            },
           },
           500: {
-            description: 'SERVER_ERROR',
+            description: 'Server Error',
+            content: {
+              'application/json': {
+                schema: {
+                  description: '',
+                  type: 'object',
+                  properties: {
+                    error_code: {
+                      type: 'string',
+                    },
+                    message: {
+                      type: 'string',
+                    },
+                  },
+                  required: ['error_code', 'message'],
+                },
+                examples: {
+                  'Unknown Error': {
+                    value: {
+                      error_code: 'SERVER_ERROR',
+                      message: 'Unknown error',
+                    },
+                  },
+                },
+              },
+            },
           },
         },
       },

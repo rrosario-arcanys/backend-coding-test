@@ -13,7 +13,9 @@ const createRide = async (req, res, db) => {
 
     if (validationError) {
       logger.error(validationError);
-      return res.send(validationError);
+      return res
+        .status(STATUS_CODE.BAD_REQUEST)
+        .send(validationError);
     }
 
     const values = [
